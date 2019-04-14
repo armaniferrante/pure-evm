@@ -1,0 +1,14 @@
+[package]
+name = "pure-evm"
+version = "0.1.0"
+authors = ["Armani Ferrante <armaniferrante@gmail.com>"]
+
+[dependencies]
+evm = { git = "https://github.com/paritytech/parity-ethereum" }
+vm = { git = "https://github.com/paritytech/parity-ethereum" }
+ethereum-types = "0.4"
+parity-bytes = "0.1"
+
+[dev-dependencies]
+hex-literal = "0.1.1"
+ethabi = "7.0.0"
