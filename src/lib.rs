@@ -125,7 +125,7 @@ mod tests {
         };
         // ABI encode with input of 4.
         let data = method.encode_input(&[ethabi::Token::Uint(input)]).unwrap();
-        let result = exec(code, data);
+        let result = exec(code, data).unwrap();
 
         assert_eq!(result.len(), 32);
         ethabi::Uint::from(&result[..32])
