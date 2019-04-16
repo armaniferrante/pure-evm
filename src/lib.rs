@@ -27,12 +27,11 @@ pub type Result<T> = vm::Result<T>;
 /// Assumes the function being called is a pure function.
 pub fn exec(code: Vec<u8>, data: Vec<u8>) -> vm::Result<Vec<u8>> {
     let params = pure_action_params(code, data);
-    let cache_size = 200;
     let schedule = evm::Schedule::new_constantinople();
 
     let evm = {
         let depth = 0;
-        let factory = EvmFactory::new(evm::VMType::default(), cache_size);
+        let factory = EvmFactory::new(evm::VMType::default(), Default::default());
         factory.create(params.clone(), &schedule, depth)
     };
 
