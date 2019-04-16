@@ -1,4 +1,5 @@
-// Referencing the built package. Replace with require('pure-evm').
+// Referencing the built package for convenience. Replace with require('pure-evm')
+// when building on one's own.
 const pure_evm = require('../../pkg');
 const assert = require('assert');
 
