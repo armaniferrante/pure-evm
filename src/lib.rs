@@ -42,14 +42,14 @@ pub fn exec(code: Vec<u8>, data: Vec<u8>) -> vm::Result<Vec<u8>> {
 
     match result {
         Ok(r) => {
-            match r.unwrap() {
+            match r? {
                 vm::GasLeft::NeedsReturn { gas_left: _, data, apply_state: _ } => {
                     Ok(data.to_vec())
                 },
-                _ => panic!(),
+                _ => return Err(vm::Error::Internal("Invalid execution".to_string())),
             }
         },
-        Err(_) => panic!(),
+        Err(_) => return Err(vm::Error::Internal("Invalid execution".to_string())),
     }
 }
 
