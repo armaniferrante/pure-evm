@@ -1,16 +1,16 @@
-extern crate evm;
-extern crate vm;
-extern crate ethereum_types;
-extern crate parity_bytes as bytes;
 #[cfg(test)]
 extern crate ethabi;
+extern crate ethereum_types;
+extern crate evm;
+extern crate parity_bytes as bytes;
+extern crate vm;
 
 mod pure_ext;
 
-use std::sync::Arc;
-use ethereum_types::{Address, U256, H256};
-use pure_ext::PureExt;
+use ethereum_types::{Address, H256, U256};
 use evm::factory::Factory as EvmFactory;
+use pure_ext::PureExt;
+use std::sync::Arc;
 
 #[cfg(test)]
 #[macro_use]
@@ -41,13 +41,13 @@ pub fn exec(code: Vec<u8>, data: Vec<u8>) -> vm::Result<Vec<u8>> {
     let result = evm.exec(&mut ext);
 
     match result {
-        Ok(r) => {
-            match r? {
-                vm::GasLeft::NeedsReturn { gas_left: _, data, apply_state: _ } => {
-                    Ok(data.to_vec())
-                },
-                _ => return Err(vm::Error::Internal("Invalid execution".to_string())),
-            }
+        Ok(r) => match r? {
+            vm::GasLeft::NeedsReturn {
+                gas_left: _,
+                data,
+                apply_state: _,
+            } => Ok(data.to_vec()),
+            _ => return Err(vm::Error::Internal("Invalid execution".to_string())),
         },
         Err(_) => return Err(vm::Error::Internal("Invalid execution".to_string())),
     }
@@ -88,8 +88,8 @@ mod tests {
 
     use super::*;
 
-	#[test]
-	fn add_0_3() {
+    #[test]
+    fn add_0_3() {
         let result = call_add_three(ethabi::Uint::from(0));
         assert_eq!(ethabi::Uint::from(3), result);
     }
