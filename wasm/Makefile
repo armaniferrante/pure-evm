@@ -1,19 +1,11 @@
 #!/usr/bin/env gmake
 
-.PHONY: all install serve
-
-all: build install serve
+.PHONY: build clean
 
 build:
-	cargo +nightly build --target=wasm32-unknown-unknown
-	wasm-bindgen target/wasm32-unknown-unknown/debug/pure_evm_wasm.wasm --out-dir .
-
-install:
-	npm install
-
-serve:
-	npm run serve
+	./build.sh
 
 clean:
 	rm pure_evm_wasm*
 	rm *~
+	rm -rf pkg

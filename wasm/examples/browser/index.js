@@ -1,11 +1,10 @@
-//
-let pure_evm = require('./pkg');
-//import("./pure_evm_wasm").then((pure_evm) =>  {
+// Referencing the built package. Replace with import('pure-evm').
+import('../../pkg').then((pure_evm) => {
 
   let output = pure_evm.exec(bytecode(), data())
 
   console.log(output);
-//});
+});
 
 /**
  * Deployed bytecode *not* the initcode for the following contract.

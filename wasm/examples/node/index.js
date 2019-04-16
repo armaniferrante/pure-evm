@@ -1,26 +1,7 @@
-# Pure-Evm
-
-A browser and node compatible EVM interpreter for pure function calls compiled to WebAssembly.
-
-## Usage
-
-`npm install pure-evm`
-
-The interface `pure_evm.exec()` takes in a contract's `bytecode` along with a transaction's `data` field. Note that the bytecode should be the bytecode stored onchain, i.e., *not* the initcode. `data` is simply the data field of the transaction to invoke the pure function, i.e., the method's sighash followed by abi encoded arguments.
-
-### Browser
-
-Because `pure-evm` is loaded as a WebAssembly module in browser, it must be loaded asynchronously.
-
-For example,
-
-```
-import('pure-evm').then((pure_evm) =>  {
-
-  let output = pure_evm.exec(bytecode(), data())
-
-  console.log(output);
-});
+// Referencing the built package. Replace with require('pure-evm').
+let pure_evm = require('./pkg');
+let output = pure_evm.exec(bytecode(), data());
+console.log("output = ", output);
 
 /**
  * Deployed bytecode *not* the initcode for the following contract.
@@ -44,13 +25,3 @@ function data() {
   let data = '083167960000000000000000000000000000000000000000000000000000000000000004';
   return new Buffer(data, 'hex');
 }
-```
-
-## Node
-
-In node environments, `pure-evm` can be used in a similar way.
-
-```
-const pure_evm = require('pure-evm');
-...
-```
