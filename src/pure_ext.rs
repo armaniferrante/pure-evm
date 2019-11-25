@@ -55,6 +55,7 @@ impl<'a> Ext for PureExt<'a> {
         _gas: &U256,
         _value: &U256,
         _code: &[u8],
+        _parent_version: &U256,
         _address: CreateContractAddress,
         _trap: bool,
     ) -> ::std::result::Result<ContractCreateResult, TrapKind> {
@@ -105,6 +106,10 @@ impl<'a> Ext for PureExt<'a> {
     }
 
     fn env_info(&self) -> &EnvInfo {
+        unimplemented!();
+    }
+
+    fn chain_id(&self) -> u64 {
         unimplemented!();
     }
 

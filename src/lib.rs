@@ -31,7 +31,7 @@ pub fn exec(code: Vec<u8>, data: Vec<u8>) -> vm::Result<Vec<u8>> {
 
     let evm = {
         let depth = 0;
-        let factory = EvmFactory::new(evm::VMType::default(), Default::default());
+        let factory = EvmFactory::new(Default::default());
         factory.create(params.clone(), &schedule, depth)
     };
 
@@ -53,18 +53,19 @@ pub fn exec(code: Vec<u8>, data: Vec<u8>) -> vm::Result<Vec<u8>> {
 }
 
 fn pure_action_params(code: Vec<u8>, data: Vec<u8>) -> vm::ActionParams {
-    let code_address = Address::from(0);
+    let code_address = Address::zero();
     let code_hash: Option<H256> = None;
-    let address = Address::from(0);
-    let sender = Address::from(0);
-    let origin = Address::from(0);
+    let address = Address::zero();
+    let sender = Address::zero();
+    let origin = Address::zero();
     let gas: U256 = 50_000_000.into();
-    let gas_price: U256 = 0.into();
+    let gas_price = U256::zero();
     let value = vm::ActionValue::Transfer(0.into());
     let code = Some(Arc::new(code));
     let data = Some(data);
     let call_type = vm::CallType::Call;
     let params_type = vm::ParamsType::Separate;
+    let code_version = U256::zero();
 
     vm::ActionParams {
         code_address,
@@ -76,6 +77,7 @@ fn pure_action_params(code: Vec<u8>, data: Vec<u8>) -> vm::ActionParams {
         gas_price,
         value,
         code,
+        code_version,
         data,
         call_type,
         params_type,

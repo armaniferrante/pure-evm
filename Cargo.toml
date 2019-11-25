@@ -6,7 +6,7 @@ authors = ["Armani Ferrante <armaniferrante@gmail.com>"]
 [dependencies]
 evm = { git = "https://github.com/paritytech/parity-ethereum" }
 vm = { git = "https://github.com/paritytech/parity-ethereum" }
-ethereum-types = "0.4"
+ethereum-types = "0.8.0"
 parity-bytes = "0.1"
 
 [dev-dependencies]
