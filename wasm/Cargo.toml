@@ -9,4 +9,4 @@ crate-type = ["cdylib"]
 
 [dependencies]
 pure-evm = { path = "../" }
-wasm-bindgen = "0.2"
+wasm-bindgen = "0.2.55"
