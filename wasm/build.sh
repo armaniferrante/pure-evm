@@ -24,7 +24,7 @@ PKG_NAME="pure-evm"
 
 # Build for both targets.
 wasm-pack build -t nodejs -d pkg-node --out-name $PKG_NAME
-wasm-pack build -t browser -d pkg --out-name $PKG_NAME
+wasm-pack build -t bundler -d pkg --out-name $PKG_NAME
 
 # Merge nodejs & browser packages.
 cp "pkg-node/${PKG_NAME}.js" "pkg/${PKG_NAME}_main.js"

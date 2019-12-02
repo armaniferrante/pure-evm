@@ -14,7 +14,7 @@ Because `pure-evm` is loaded as a WebAssembly module in browser, it must be load
 
 For example,
 
-```
+```javascript
 import('pure-evm').then((pure_evm) => {
 
   let output = pure_evm.exec(bytecode(), data())
@@ -51,7 +51,7 @@ function data() {
 
 In node environments, `pure-evm` can be used in a similar way.
 
-```
+```javascript
 const pure_evm = require('pure-evm');
 ...
 ```
