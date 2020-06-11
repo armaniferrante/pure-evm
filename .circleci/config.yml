@@ -1,0 +1,94 @@
+################################################################################
+#
+# .circleci/config.yml defines the build pipeline for circleci.
+#
+################################################################################
+
+#
+# The default docker image for each job.
+#
+defaults: &defaults
+  docker:
+    - image: armaniferrante/pure-evm:latest
+
+#
+# Retrieves the cached rust crates.
+#
+restore_rs_build: &restore_rs_build
+  restore_cache:
+    keys:
+      - v0-dependencies-{{ checksum "Cargo.lock" }}
+      - v0-dependencies-
+
+#
+# Caches rust crates.
+#
+save_rs_build: &save_rs_build
+  save_cache:
+    paths:
+      - "./target"
+      - "~/.cargo"
+    key: v0-dependencies-{{ checksum "Cargo.lock" }}
+
+#
+# Retrieves the cached javascript dependencies.
+#
+restore_js_build: &restore_js_build
+  restore_cache:
+    keys:
+      - v0-dependencies-{{ checksum "wasm/examples/node/yarn.lock" }}
+      - v0-dependencies-
+
+#
+# Saves the cached javascript dependencies.
+#
+save_js_build: &save_js_build
+  save_cache:
+    paths:
+      - "./wasm/examples/node/node_modules"
+    key: v0-dependencies-{{ checksum "wasm/examples/node/yarn.lock" }}
+
+version: 2.1
+jobs:
+  #
+  # Tests the rust crate.
+  #
+  test-rust:
+    <<: *defaults
+    steps:
+      - run: echo 'PS1='"'"'\$ '"'"'; . /root/.bashrc' >> $BASH_ENV
+
+      - checkout
+
+      - <<: *restore_rs_build
+
+      - run: cargo fmt -- --check
+      - run: cargo test
+
+      - <<: *save_rs_build
+
+  #
+  # Tests the wasm crate.
+  #
+  test-wasm:
+    <<: *defaults
+    steps:
+      - run: echo 'PS1='"'"'\$ '"'"'; . /root/.bashrc' >> $BASH_ENV
+
+      - checkout
+
+      - <<: *restore_rs_build
+      - <<: *restore_js_build
+
+      - run: cd wasm && make build
+      - run: cd wasm/examples/node && yarn && yarn test
+
+      - <<: *save_rs_build
+      - <<: *save_js_build
+
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - test-rust
+      - test-wasm

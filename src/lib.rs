@@ -3,12 +3,14 @@ extern crate ethabi;
 extern crate ethereum_types;
 extern crate evm;
 extern crate parity_bytes as bytes;
+extern crate primitive_types;
 extern crate vm;
 
 mod pure_ext;
 
-use ethereum_types::{Address, H256, U256};
+use ethereum_types::Address;
 use evm::factory::Factory as EvmFactory;
+use primitive_types::{H256, U256};
 use pure_ext::PureExt;
 use std::sync::Arc;
 
@@ -63,7 +65,7 @@ fn pure_action_params(code: Vec<u8>, data: Vec<u8>) -> vm::ActionParams {
     let value = vm::ActionValue::Transfer(0.into());
     let code = Some(Arc::new(code));
     let data = Some(data);
-    let call_type = vm::CallType::Call;
+    let action_type = vm::ActionType::Call;
     let params_type = vm::ParamsType::Separate;
     let code_version = U256::zero();
 
@@ -79,7 +81,7 @@ fn pure_action_params(code: Vec<u8>, data: Vec<u8>) -> vm::ActionParams {
         code,
         code_version,
         data,
-        call_type,
+        action_type,
         params_type,
     }
 }
@@ -131,5 +133,4 @@ mod tests {
         assert_eq!(result.len(), 32);
         ethabi::Uint::from(&result[..32])
     }
-
 }
