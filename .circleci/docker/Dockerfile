@@ -14,7 +14,7 @@ ENV PATH="${HOME}/.cargo/bin:${PATH}"
 RUN curl "https://sh.rustup.rs" -sfo rustup.sh && \
     sh rustup.sh -y && \
     rustup target add wasm32-unknown-unknown && \
-	  rustup component add rustfmt && \
+    rustup component add rustfmt && \
     curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
 # Install node and node globals dependencies.
