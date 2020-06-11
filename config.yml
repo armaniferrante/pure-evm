@@ -14,7 +14,7 @@ defaults: &defaults
 #
 # Retrieves the cached rust crates.
 #
-restore_rust_build: &restore_rust_build
+restore_rs_build: &restore_rs_build
   restore_cache:
     keys:
       - v0-dependencies-{{ checksum "Cargo.lock" }}
@@ -23,7 +23,7 @@ restore_rust_build: &restore_rust_build
 #
 # Caches rust crates.
 #
-save_rust_build: &save_rust_build
+save_rs_build: &save_rs_build
   save_cache:
     paths:
       - "./target"
@@ -60,12 +60,12 @@ jobs:
 
       - checkout
 
-      - <<: *restore_rust_build
+      - <<: *restore_rs_build
 
       - run: cargo fmt -- --check
       - run: cargo test
 
-      - <<: *save_rust_build
+      - <<: *save_rs_build
 
   #
   # Tests the wasm crate.
@@ -77,13 +77,13 @@ jobs:
 
       - checkout
 
-      - <<: *restore_rust_build
+      - <<: *restore_rs_build
       - <<: *restore_js_build
 
       - run: cd wasm && make build
       - run: cd examples/node && yarn && yarn test
 
-      - <<: *save_rust_build
+      - <<: *save_rs_build
       - <<: *save_js_build
 
 workflows:
