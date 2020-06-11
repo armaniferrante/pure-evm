@@ -6,8 +6,10 @@ const assert = require('assert');
 const output = pure_evm.exec(bytecode(), data());
 
 const expected = Buffer.from([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7]);
-console.log(output);
+
 assert.equal(expected.toString('hex'), Buffer.from(output).toString('hex'));
+
+console.log("Adder success.");
 
 /**
  * Deployed bytecode *not* the initcode for the following contract.

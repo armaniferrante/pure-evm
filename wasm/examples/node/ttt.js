@@ -25,7 +25,7 @@ assert.equal(state_data.board[0] + "", '1,0,0');
 assert.equal(state_data.board[1] + "", '0,2,0');
 assert.equal(state_data.board[2] + "", '0,0,0');
 
-console.log("after = ", state_data.board);
+console.log("Tic-tac-toe success.");
 
 
 function stateAbi() {

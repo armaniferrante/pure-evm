@@ -131,5 +131,4 @@ mod tests {
         assert_eq!(result.len(), 32);
         ethabi::Uint::from(&result[..32])
     }
-
 }
