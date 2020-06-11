@@ -48,7 +48,7 @@ save_js_build: &save_js_build
       - "./wasm/examples/node/node_modules"
     key: v0-dependencies-{{ checksum "wasm/examples/node/yarn.lock" }}
 
-version: 2
+version: 2.1
 jobs:
   #
   # Tests the rust crate.
@@ -87,7 +87,7 @@ jobs:
       - <<: *save_js_build
 
 workflows:
-  version: 2
+  version: 2.1
   build:
     jobs:
       - test-rust
