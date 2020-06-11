@@ -9,9 +9,8 @@ extern crate vm;
 mod pure_ext;
 
 use ethereum_types::Address;
-use evm::factory::Factory as EvmFactory;
 use primitive_types::{H256, U256};
-use pure_ext::PureExt;
+
 use std::sync::Arc;
 
 #[cfg(test)]
@@ -28,30 +27,7 @@ pub type Result<T> = vm::Result<T>;
 ///
 /// Assumes the function being called is a pure function.
 pub fn exec(code: Vec<u8>, data: Vec<u8>) -> vm::Result<Vec<u8>> {
-    let params = pure_action_params(code, data);
-    let schedule = evm::Schedule::new_constantinople();
-
-    let evm = {
-        let depth = 0;
-        let factory = EvmFactory::new(Default::default());
-        factory.create(params.clone(), &schedule, depth)
-    };
-
-    let mut ext = PureExt::new(&schedule);
-
-    let result = evm.exec(&mut ext);
-
-    match result {
-        Ok(r) => match r? {
-            vm::GasLeft::NeedsReturn {
-                gas_left: _,
-                data,
-                apply_state: _,
-            } => Ok(data.to_vec()),
-            _ => return Err(vm::Error::Internal("Invalid execution".to_string())),
-        },
-        Err(_) => return Err(vm::Error::Internal("Invalid execution".to_string())),
-    }
+    Ok(vec![0])
 }
 
 fn pure_action_params(code: Vec<u8>, data: Vec<u8>) -> vm::ActionParams {
