@@ -33,7 +33,7 @@ save_rust_build: &save_rust_build
 #
 # Retrieves the cached javascript dependencies.
 #
-restore_rust_build: &restore_js_build
+restore_js_build: &restore_js_build
   restore_cache:
     keys:
       - v0-dependencies-{{ checksum "wasm/examples/node/yarn.lock" }}
