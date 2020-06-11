@@ -4,9 +4,10 @@ version = "0.1.0"
 authors = ["Armani Ferrante <armaniferrante@gmail.com>"]
 
 [dependencies]
-evm = { git = "https://github.com/paritytech/parity-ethereum" }
-vm = { git = "https://github.com/paritytech/parity-ethereum" }
-ethereum-types = "0.8.0"
+evm = { git = "https://github.com/openethereum/openethereum" }
+vm = { git = "https://github.com/openethereum/openethereum" }
+primitive-types = "0.7.2"
+ethereum-types = "0.9.0"
 parity-bytes = "0.1"
 
 [dev-dependencies]

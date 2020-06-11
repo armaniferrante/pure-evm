@@ -2,8 +2,8 @@ use bytes::Bytes;
 use ethereum_types::{Address, H256, U256};
 use std::sync::Arc;
 use vm::{
-    CallType, ContractCreateResult, CreateContractAddress, EnvInfo, Ext, MessageCallResult, Result,
-    ReturnData, Schedule, TrapKind,
+    ActionType, ContractCreateResult, CreateContractAddress, EnvInfo, Ext, MessageCallResult,
+    Result, ReturnData, Schedule, TrapKind,
 };
 
 /// Externalities for an EVM supporting pure functions only.
@@ -70,7 +70,7 @@ impl<'a> Ext for PureExt<'a> {
         _value: Option<U256>,
         _data: &[u8],
         _code_address: &Address,
-        _call_type: CallType,
+        _action_type: ActionType,
         _trap: bool,
     ) -> ::std::result::Result<MessageCallResult, TrapKind> {
         unimplemented!();
