@@ -81,7 +81,7 @@ jobs:
       - <<: *restore_js_build
 
       - run: cd wasm && make build
-      - run: cd examples/node && yarn && yarn test
+      - run: cd wasm/examples/node && yarn && yarn test
 
       - <<: *save_rs_build
       - <<: *save_js_build
