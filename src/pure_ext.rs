@@ -73,6 +73,22 @@ impl<'a> Ext for PureExt<'a> {
         _action_type: ActionType,
         _trap: bool,
     ) -> ::std::result::Result<MessageCallResult, TrapKind> {
+        if *_receive_address == Address::from_low_u64_be(1) {
+            panic!("Address 0x01");
+        } else if *_receive_address == Address::from_low_u64_be(2) {
+            // panic!("Address 0x02");
+            let data = vec![
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 1,
+            ];
+
+            return Ok(MessageCallResult::Success(
+                // Simulate that no gas was used
+                _gas.clone(),
+                // Return data
+                ReturnData::new(data, 0, 32),
+            ));
+        }
         unimplemented!();
     }
 
