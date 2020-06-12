@@ -1,4 +1,6 @@
-use bytes::Bytes;
+use bytes::{Bytes, BytesRef};
+use crypto::digest::Digest;
+use crypto::sha3::Sha3;
 use ethereum_types::{Address, H256, U256};
 use std::sync::Arc;
 use vm::{
@@ -65,7 +67,7 @@ impl<'a> Ext for PureExt<'a> {
     fn call(
         &mut self,
         gas: &U256,
-        sender_address: &Address,
+        _sender_address: &Address,
         receive_address: &Address,
         _value: Option<U256>,
         data: &[u8],
@@ -73,17 +75,26 @@ impl<'a> Ext for PureExt<'a> {
         _action_type: ActionType,
         _trap: bool,
     ) -> ::std::result::Result<MessageCallResult, TrapKind> {
-        let data = vec![
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 1,
-        ];
-
-        return Ok(MessageCallResult::Success(
-            // Simulate that no gas was used
-            gas.clone(),
-            // Return data
-            ReturnData::new(data, 0, 32),
-        ));
+        if receive_address == &Address::from_low_u64_be(1) {
+            // let mut o = [255u8; 32];
+            // EcRecover
+            //     .execute(data, &mut BytesRef::Fixed(&mut o))
+            //     .expect("ecrecover failed");
+            // return Ok(MessageCallResult::Success(
+            //     gas.clone(),
+            //     ReturnData::new(Vec::from(&o[..]), 0, 32),
+            // ));
+        } else if receive_address == &Address::from_low_u64_be(2) {
+            let mut o = [255u8; 32];
+            let mut keccak = Sha3::keccak256();
+            keccak.input(&data);
+            keccak.result(&mut o);
+            return Ok(MessageCallResult::Success(
+                gas.clone(),
+                ReturnData::new(Vec::from(&o[..]), 0, 32),
+            ));
+        }
+        unimplemented!();
     }
 
     fn extcode(&self, _address: &Address) -> Result<Option<Arc<Bytes>>> {
