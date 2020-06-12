@@ -3,7 +3,7 @@
  * https://github.com/connext/indra/blob/staging/modules/contracts/src.sol/apps/SimpleLinkedTransferApp.sol
  */
 
-const pure_evm = require("../../pkg");
+const pure_evm = require("../../pkg-node");
 const assert = require("assert");
 const types = require("@connext/types");
 const contracts = require("@connext/contracts");
@@ -86,7 +86,7 @@ function linkedData() {
     [action]
   );
   const iface = new Interface(SimpleLinkedTransferApp.abi);
-  const data = iface.functions.applyAction.encode([
+  const data = iface.encodeFunctionData("applyAction", [
     encodedState,
     encodedAction,
   ]);
