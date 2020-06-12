@@ -73,18 +73,22 @@ impl<'a> Ext for PureExt<'a> {
         _action_type: ActionType,
         _trap: bool,
     ) -> ::std::result::Result<MessageCallResult, TrapKind> {
+        panic!("in call");
         unimplemented!();
     }
 
     fn extcode(&self, _address: &Address) -> Result<Option<Arc<Bytes>>> {
+      panic!("extcode");
         unimplemented!();
     }
 
     fn extcodehash(&self, _address: &Address) -> Result<Option<H256>> {
+      panic!("extcodehash");
         unimplemented!();
     }
 
     fn extcodesize(&self, _address: &Address) -> Result<Option<usize>> {
+      panic!("extcodesize");
         unimplemented!();
     }
 
@@ -94,6 +98,7 @@ impl<'a> Ext for PureExt<'a> {
 
     fn ret(self, _gas: &U256, _data: &ReturnData, _apply_state: bool) -> Result<U256> {
         // todo
+        panic!("ret");
         unimplemented!();
     }
 
@@ -114,7 +119,8 @@ impl<'a> Ext for PureExt<'a> {
     }
 
     fn depth(&self) -> usize {
-        unimplemented!();
+      // TODO: figure out what this means and proper dummy value
+      1
     }
 
     fn add_sstore_refund(&mut self, _value: usize) {
@@ -137,6 +143,7 @@ impl<'a> Ext for PureExt<'a> {
         _mem_written: Option<(usize, usize)>,
         _store_written: Option<(U256, U256)>,
     ) {
+      panic!("trace_prepare_execute");
         unimplemented!();
     }
 
