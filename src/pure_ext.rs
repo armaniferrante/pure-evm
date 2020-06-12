@@ -64,16 +64,26 @@ impl<'a> Ext for PureExt<'a> {
 
     fn call(
         &mut self,
-        _gas: &U256,
-        _sender_address: &Address,
-        _receive_address: &Address,
+        gas: &U256,
+        sender_address: &Address,
+        receive_address: &Address,
         _value: Option<U256>,
-        _data: &[u8],
+        data: &[u8],
         _code_address: &Address,
         _action_type: ActionType,
         _trap: bool,
     ) -> ::std::result::Result<MessageCallResult, TrapKind> {
-        unimplemented!();
+        let data = vec![
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 1,
+        ];
+
+        return Ok(MessageCallResult::Success(
+            // Simulate that no gas was used
+            gas.clone(),
+            // Return data
+            ReturnData::new(data, 0, 32),
+        ));
     }
 
     fn extcode(&self, _address: &Address) -> Result<Option<Arc<Bytes>>> {
@@ -114,7 +124,9 @@ impl<'a> Ext for PureExt<'a> {
     }
 
     fn depth(&self) -> usize {
-        unimplemented!();
+        // Assume the contract tested does not make calls to other contracts,
+        // hence the execution depth should always be 0.
+        0
     }
 
     fn add_sstore_refund(&mut self, _value: usize) {
