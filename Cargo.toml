@@ -9,6 +9,7 @@ vm = { git = "https://github.com/openethereum/openethereum" }
 primitive-types = "0.7.2"
 ethereum-types = "0.9.0"
 parity-bytes = "0.1"
+rust-crypto-wasm = "0.3"
 
 [dev-dependencies]
 hex-literal = "0.1.1"
