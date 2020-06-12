@@ -86,7 +86,7 @@ function linkedData() {
     [action]
   );
   const iface = new Interface(SimpleLinkedTransferApp.abi);
-  const data = iface.encodeFunctionData("applyAction", [
+  const data = iface.functions.applyAction.encode([
     encodedState,
     encodedAction,
   ]);
