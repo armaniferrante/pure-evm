@@ -5,11 +5,10 @@
 
 const pure_evm = require("../../pkg-node");
 const assert = require("assert");
-const types = require("@connext/types");
 const contracts = require("@connext/contracts");
-const connextUtils = require("@connext/utils");
 const ethers = require("ethers");
 const {
+  getRandomBytes32,
   getTestReceiptToSign,
   signReceiptMessage,
   getTestVerifyingContract,
@@ -17,6 +16,8 @@ const {
 const {
   SimpleSignedTransferAppStateEncoding,
   SimpleSignedTransferAppActionEncoding,
+  SimpleLinkedTransferAppStateEncoding,
+  SimpleLinkedTransferAppActionEncoding,
 } = require("@connext/types");
 
 const { Wallet, constants, utils } = ethers;
@@ -24,11 +25,6 @@ const { soliditySha256, defaultAbiCoder, Interface } = utils;
 const { HashZero, Zero, One } = constants;
 
 const { SimpleLinkedTransferApp, SimpleSignedTransferApp } = contracts;
-const { getRandomBytes32 } = connextUtils;
-const {
-  SimpleLinkedTransferAppStateEncoding,
-  SimpleLinkedTransferAppActionEncoding,
-} = types;
 
 const sender = Wallet.createRandom();
 const receiver = Wallet.createRandom();
@@ -68,10 +64,6 @@ const randomBytes = getRandomBytes32();
   console.log("Precompiles sha success. Beginning ecrecover test.");
 
   // execute for ecrecover precompile
-  console.log(
-    `ecrecover deployed:`,
-    SimpleSignedTransferApp.deployedBytecode.replace("0x", "")
-  );
   const bytecode = Uint8Array.from(
     Buffer.from(
       SimpleSignedTransferApp.deployedBytecode.replace("0x", ""),
@@ -161,6 +153,7 @@ function linkedData() {
 
 async function signedState() {
   const receipt = getTestReceiptToSign();
+  const verifyingContract = getTestVerifyingContract();
   const state = {
     coinTransfers: [
       {
@@ -174,20 +167,20 @@ async function signedState() {
     ],
     signerAddress: receiver.address,
     chainId: 1337,
-    verifyingContact: getTestVerifyingContract(),
+    verifyingContract,
     requestCID: receipt.requestCID,
-    subgraphDeploymentId: receipt.subgraphDeploymentID,
+    subgraphDeploymentID: receipt.subgraphDeploymentID,
     paymentId: randomBytes,
     finalized: false,
   };
   const signature = await signReceiptMessage(
     receipt,
     state.chainId,
-    state.verifyingContact,
+    verifyingContract,
     receiver.privateKey
   );
   const action = {
-    resonseCID: receipt.responseCID,
+    responseCID: receipt.responseCID,
     signature,
   };
   return { state, action };
@@ -195,7 +188,6 @@ async function signedState() {
 
 async function signedData() {
   const { state, action } = await signedState();
-
   const encodedState = defaultAbiCoder.encode(
     [SimpleSignedTransferAppStateEncoding],
     [state]
@@ -209,6 +201,5 @@ async function signedData() {
     encodedState,
     encodedAction,
   ]);
-  console.log(`ecrecover fn data:`, data.replace("0x", ""));
   return Uint8Array.from(Buffer.from(data.replace("0x", ""), "hex"));
 }
