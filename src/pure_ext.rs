@@ -1,6 +1,6 @@
 use bytes::{Bytes, BytesRef};
 use crypto::digest::Digest;
-use crypto::sha3::Sha3;
+use crypto::sha2::Sha256;
 use ethereum_types::{Address, H256, U256};
 use std::sync::Arc;
 use vm::{
@@ -86,9 +86,9 @@ impl<'a> Ext for PureExt<'a> {
             // ));
         } else if receive_address == &Address::from_low_u64_be(2) {
             let mut o = [255u8; 32];
-            let mut keccak = Sha3::keccak256();
-            keccak.input(&data);
-            keccak.result(&mut o);
+            let mut digest = Sha256::new();
+            digest.input(&data);
+            digest.result(&mut o);
             return Ok(MessageCallResult::Success(
                 gas.clone(),
                 ReturnData::new(Vec::from(&o[..]), 0, 32),
