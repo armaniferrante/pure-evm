@@ -1,5 +1,6 @@
 #[cfg(test)]
 extern crate ethabi;
+extern crate crypto;
 extern crate ethereum_types;
 extern crate evm;
 extern crate parity_bytes as bytes;

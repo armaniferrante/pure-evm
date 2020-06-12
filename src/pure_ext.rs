@@ -1,4 +1,6 @@
-use bytes::Bytes;
+use bytes::{Bytes, BytesRef};
+use crypto::digest::Digest;
+use crypto::sha2::Sha256;
 use ethereum_types::{Address, H256, U256};
 // use parity_crypto::digest;
 use std::sync::Arc;
@@ -65,33 +67,32 @@ impl<'a> Ext for PureExt<'a> {
 
     fn call(
         &mut self,
-        _gas: &U256,
+        gas: &U256,
         _sender_address: &Address,
-        _receive_address: &Address,
+        receive_address: &Address,
         _value: Option<U256>,
-        _data: &[u8],
+        data: &[u8],
         _code_address: &Address,
         _action_type: ActionType,
         _trap: bool,
     ) -> ::std::result::Result<MessageCallResult, TrapKind> {
-        if *_receive_address == Address::from_low_u64_be(1) {
-            panic!("TODO: add ec recover implementation");
-        } else if *_receive_address == Address::from_low_u64_be(2) {
-            println!("SHA256 built-in");
-
-            let data = vec![
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 1,
-            ];
-
-            // TODO: fix implementation
-            // let d = digest::sha256(_data);
-
+        if receive_address == &Address::from_low_u64_be(1) {
+            // let mut o = [255u8; 32];
+            // EcRecover
+            //     .execute(data, &mut BytesRef::Fixed(&mut o))
+            //     .expect("ecrecover failed");
+            // return Ok(MessageCallResult::Success(
+            //     gas.clone(),
+            //     ReturnData::new(Vec::from(&o[..]), 0, 32),
+            // ));
+        } else if receive_address == &Address::from_low_u64_be(2) {
+            let mut o = [255u8; 32];
+            let mut digest = Sha256::new();
+            digest.input(&data);
+            digest.result(&mut o);
             return Ok(MessageCallResult::Success(
-                // Simulate that no gas was used
-                _gas.clone(),
-                // Return data
-                ReturnData::new(data, 0, 32),
+                gas.clone(),
+                ReturnData::new(Vec::from(&o[..]), 0, 32),
             ));
         }
         unimplemented!();
@@ -135,6 +136,8 @@ impl<'a> Ext for PureExt<'a> {
     }
 
     fn depth(&self) -> usize {
+        // Assume the contract tested does not make calls to other contracts,
+        // hence the execution depth should always be 0.
         0
     }
 
