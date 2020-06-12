@@ -1,5 +1,6 @@
 use bytes::Bytes;
 use ethereum_types::{Address, H256, U256};
+// use parity_crypto::digest;
 use std::sync::Arc;
 use vm::{
     ActionType, ContractCreateResult, CreateContractAddress, EnvInfo, Ext, MessageCallResult,
@@ -74,13 +75,17 @@ impl<'a> Ext for PureExt<'a> {
         _trap: bool,
     ) -> ::std::result::Result<MessageCallResult, TrapKind> {
         if *_receive_address == Address::from_low_u64_be(1) {
-            panic!("Address 0x01");
+            panic!("TODO: add ec recover implementation");
         } else if *_receive_address == Address::from_low_u64_be(2) {
-            // panic!("Address 0x02");
+            println!("SHA256 built-in");
+
             let data = vec![
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 1,
             ];
+
+            // TODO: fix implementation
+            // let d = digest::sha256(_data);
 
             return Ok(MessageCallResult::Success(
                 // Simulate that no gas was used
@@ -130,8 +135,7 @@ impl<'a> Ext for PureExt<'a> {
     }
 
     fn depth(&self) -> usize {
-        // TODO: figure out what this means and proper dummy value
-        1
+        0
     }
 
     fn add_sstore_refund(&mut self, _value: usize) {
