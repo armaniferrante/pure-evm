@@ -1,10 +1,12 @@
+extern crate crypto;
 #[cfg(test)]
 extern crate ethabi;
-extern crate crypto;
 extern crate ethereum_types;
 extern crate evm;
 extern crate parity_bytes as bytes;
 extern crate primitive_types;
+extern crate secp256k1;
+extern crate tiny_keccak;
 extern crate vm;
 
 mod pure_ext;
