@@ -2,6 +2,7 @@ use bytes::{Bytes, BytesRef};
 use crypto::digest::Digest;
 use crypto::sha2::Sha256;
 use ethereum_types::{Address, H256, U256};
+// use parity_crypto::digest;
 use std::sync::Arc;
 use vm::{
     ActionType, ContractCreateResult, CreateContractAddress, EnvInfo, Ext, MessageCallResult,
