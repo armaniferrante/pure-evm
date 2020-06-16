@@ -3,11 +3,12 @@
  * https://github.com/counterfactual/monorepo/blob/master/packages/apps/contracts/TicTacToeApp.sol.
  */
 
+const assert = require("assert");
+const ethers = require("ethers");
+
 // Referencing the built package for convenience. Replace with require('pure-evm') when
 // using on one's own.
-const pure_evm = require("../../pkg-node");
-const ethers = require("ethers");
-const assert = require("assert");
+const pure_evm = require("../../pkg");
 
 // Execute on the raw bytes.
 let output = pure_evm.exec(tttBytecode(), tttData());

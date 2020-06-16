@@ -1,7 +1,8 @@
+const assert = require("assert");
+
 // Referencing the built package for convenience. Replace with require('pure-evm')
 // when building on one's own.
-const pure_evm = require("../../pkg-node");
-const assert = require("assert");
+const pure_evm = require("../../pkg");
 
 const output = pure_evm.exec(bytecode(), data());
 

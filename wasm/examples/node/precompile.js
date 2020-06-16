@@ -3,22 +3,23 @@
  * https://github.com/connext/indra/blob/staging/modules/contracts/src.sol/apps/SimpleLinkedTransferApp.sol
  */
 
-const pure_evm = require("../../pkg-node");
-const assert = require("assert");
 const contracts = require("@connext/contracts");
-const ethers = require("ethers");
-const {
-  getRandomBytes32,
-  getTestReceiptToSign,
-  signReceiptMessage,
-  getTestVerifyingContract,
-} = require("@connext/utils");
 const {
   SimpleSignedTransferAppStateEncoding,
   SimpleSignedTransferAppActionEncoding,
   SimpleLinkedTransferAppStateEncoding,
   SimpleLinkedTransferAppActionEncoding,
 } = require("@connext/types");
+const {
+  getRandomBytes32,
+  getTestReceiptToSign,
+  signReceiptMessage,
+  getTestVerifyingContract,
+} = require("@connext/utils");
+const assert = require("assert");
+const ethers = require("ethers");
+
+const pure_evm = require("../../pkg");
 
 const { Wallet, constants, utils } = ethers;
 const { soliditySha256, defaultAbiCoder, Interface } = utils;
