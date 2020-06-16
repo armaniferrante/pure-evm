@@ -6,6 +6,6 @@ build:
 	./build.sh
 
 clean:
-	rm pure_evm_wasm*
-	rm *~
+	rm -f pure_evm_wasm*
+	rm -f *~
 	rm -rf pkg
